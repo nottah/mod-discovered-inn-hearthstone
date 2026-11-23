@@ -1,0 +1,1 @@
+# Discovered inn Hearthstone module.
