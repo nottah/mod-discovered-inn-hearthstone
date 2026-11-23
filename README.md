@@ -4,6 +4,16 @@ This AzerothCore WotLK module lets a character add an innkeeper as a Hearthstone
 
 Selecting an inn starts item 6948's real spell (8690). This keeps normal Hearthstone casting and cooldown behavior; the module changes only that cast's teleport destination. Existing innkeeper services, including setting the regular home bind, remain available.
 
+## In game
+
+At an innkeeper, select **Discover this inn for your Hearthstone**:
+
+![Innkeeper gossip showing the Discover this inn option](screenshots/innkeeper-discover-option.png)
+
+Use the regular Hearthstone to choose one of the inns you have discovered:
+
+![Hearthstone gossip showing the discovered inn destinations](screenshots/hearthstone-destinations.png)
+
 ## Install
 
 1. Add this module to the server source and rebuild `worldserver`.
