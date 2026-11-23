@@ -19,4 +19,4 @@ This is an unofficial community module for AzerothCore WotLK. It was developed i
 
 This project is not affiliated with or endorsed by AzerothCore, the Playerbots project, Yu'Lon, Blizzard Entertainment, or World of Warcraft.
 
-No license has been selected for this module yet. Choose a license before making the repository public if you want others to have explicit permission to reuse or modify it.
+The original module code is licensed under the MIT License; see [`LICENSE`](LICENSE). The AzerothCore APIs and server remain under their own licenses.
