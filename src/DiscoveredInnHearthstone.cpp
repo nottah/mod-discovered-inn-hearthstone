@@ -25,7 +25,9 @@
 #include "WorldSession.h"
 
 #include <algorithm>
+#include <set>
 #include <unordered_map>
+#include <utility>
 #include <vector>
 
 namespace
@@ -75,8 +77,8 @@ uint32 PlayerKey(Player const* player)
 bool IsDiscovered(Player const* player, Creature const* innkeeper)
 {
     QueryResult result = CharacterDatabase.Query(
-        "SELECT 1 FROM `character_hearthstone_inns` WHERE `guid` = {} AND `inn_guid` = {} LIMIT 1",
-        PlayerKey(player), innkeeper->GetGUID().GetRawValue());
+        "SELECT 1 FROM `character_hearthstone_inns` WHERE `guid` = {} AND `area_id` = {} AND `map_id` = {} LIMIT 1",
+        PlayerKey(player), player->GetAreaId(), innkeeper->GetMapId());
     return bool(result);
 }
 
@@ -100,6 +102,7 @@ std::string DestinationName(Player const* player, InnDestination const& destinat
 std::vector<InnDestination> LoadDestinations(Player const* player)
 {
     std::vector<InnDestination> destinations;
+    std::set<std::pair<uint32, uint32>> discoveredAreas;
     QueryResult result = CharacterDatabase.Query(
         "SELECT `id`, `creature_entry`, `area_id`, `map_id`, `pos_x`, `pos_y`, `pos_z`, `pos_o` "
         "FROM `character_hearthstone_inns` WHERE `guid` = {} ORDER BY `area_id`, `id`",
@@ -119,6 +122,10 @@ std::vector<InnDestination> LoadDestinations(Player const* player)
         destination.y = fields[5].Get<float>();
         destination.z = fields[6].Get<float>();
         destination.o = fields[7].Get<float>();
+
+        if (!discoveredAreas.emplace(destination.mapId, destination.areaId).second)
+            continue;
+
         destinations.push_back(destination);
     } while (result->NextRow());
 
@@ -234,7 +241,7 @@ public:
         {
             case ACTION_DISCOVER_INN:
             {
-                CharacterDatabase.Execute(
+                CharacterDatabase.DirectExecute(
                     "INSERT IGNORE INTO `character_hearthstone_inns` "
                     "(`guid`, `inn_guid`, `creature_entry`, `area_id`, `map_id`, `pos_x`, `pos_y`, `pos_z`, `pos_o`) "
                     "VALUES ({}, {}, {}, {}, {}, {}, {}, {}, {})",

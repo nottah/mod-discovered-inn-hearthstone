@@ -11,7 +11,7 @@ Selecting an inn starts item 6948's real spell (8690). This keeps normal Hearths
 3. Apply `data/sql/world/base/discovered_inn_hearthstone.sql` to the world database.
 4. Restart the worldserver and test with a character that has the ordinary Hearthstone item.
 
-The SQL table is per character and survives server restarts. Discovery is character-specific. This module does not grant GM access or create a new item.
+The SQL table is per character and survives server restarts. Discovery is character-specific and keyed to the inn's map and area, so the same inn is offered only once. If older records contain duplicates for that inn, the Hearthstone menu shows it once. This module does not grant GM access or create a new item.
 
 ## Compatibility and provenance
 
